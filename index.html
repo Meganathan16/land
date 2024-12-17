@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .image-container img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center align the modal */
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 80%; /* Reduced width */
+            max-width: 500px; /* Limit maximum width */
+        }
+        .modal-content video {
+            max-width: 100%;
+            height: auto;
+        }
+        .close-btn {
+            background: #ff5b5b;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Image Website</h1>
+    <div class="image-container">
+        <img src="land1.jpg" alt="Land 1" onclick="showDetails(1)">
+        <img src="land2.jpg" alt="Land 2" onclick="showDetails(2)">
+        <img src="land3.jpg" alt="Land 3" onclick="showDetails(3)">
+        <img src="land4.jpg" alt="Land 4" onclick="showDetails(4)">
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <p>Loading...</p>
+        </div>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+
+    <script>
+        const data = {
+            1: {
+                text: "This is the description of Land 1.",
+                video: "land1.mp4"
+            },
+            2: {
+                text: "This is the description of Land 2.",
+                video: "land2.mp4"
+            },
+            3: {
+                text: "This is the description of Land 3.",
+                video: "land3.mp4"
+            },
+            4: {
+                text: "This is the description of Land 4.",
+                video: "land4.mp4"
+            }
+        };
+
+        function detectOS() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/android/i.test(userAgent)) {
+                document.body.style.backgroundColor = "#f0f8ff"; // Light blue for Android
+            } else if (/windows/i.test(userAgent)) {
+                document.body.style.backgroundColor = "#f5f5f5"; // Light gray for Windows
+            } else {
+                document.body.style.backgroundColor = "#ffffff"; // Default white
+            }
+        }
+
+        function showDetails(id) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+
+            modalContent.innerHTML = `
+                <p>Do you want to see details as:</p>
+                <button onclick="showText(${id})">Text</button>
+                <button onclick="showVideo(${id})">Video</button>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function showText(id) {
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `<p>${data[id].text}</p>`;
+        }
+
+        function showVideo(id) {
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <video controls>
+                    <source src="${data[id].video}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <br>
+                <button onclick="downloadVideo('${data[id].video}', 'video${id}.mp4')">Download Video</button>
+            `;
+        }
+
+        function downloadVideo(videoUrl, filename) {
+            const a = document.createElement('a');
+            a.href = videoUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        // Detect OS on page load
+        detectOS();
+    </script>
+</body>
+</html>

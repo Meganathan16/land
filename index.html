@@ -72,7 +72,7 @@
         <div class="modal-content" id="modalContent">
             <p>Loading...</p>
         </div>
-        <button class="close-btn" onclick="closeModal()">Close</button>
+        
     </div>
 
     <script>
@@ -130,18 +130,8 @@
                     <source src="${data[id].video}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <br>
-                <button onclick="downloadVideo('${data[id].video}', 'video${id}.mp4')">Download Video</button>
+                
             `;
-        }
-
-        function downloadVideo(videoUrl, filename) {
-            const a = document.createElement('a');
-            a.href = videoUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
         }
 
         function closeModal() {

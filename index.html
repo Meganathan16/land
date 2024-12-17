@@ -44,18 +44,31 @@
             text-align: center;
             width: 80%; /* Reduced width */
             max-width: 500px; /* Limit maximum width */
+            position: relative;
         }
         .modal-content video {
             max-width: 100%;
             height: auto;
         }
         .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: #ff5b5b;
             color: #fff;
             border: none;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 50%;
             cursor: pointer;
+            font-size: 16px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover {
+            background-color: #ff4c4c;
         }
     </style>
 </head>
@@ -71,8 +84,8 @@
     <div id="modal" class="modal">
         <div class="modal-content" id="modalContent">
             <p>Loading...</p>
+            <button class="close-btn" onclick="closeModal()">X</button>
         </div>
-        
     </div>
 
     <script>
@@ -109,18 +122,21 @@
         function showDetails(id) {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
-
             modalContent.innerHTML = `
                 <p>Do you want to see details as:</p>
                 <button onclick="showText(${id})">Text</button>
                 <button onclick="showVideo(${id})">Video</button>
+                <button class="close-btn" onclick="closeModal()">X</button>
             `;
             modal.style.display = 'flex';
         }
 
         function showText(id) {
             const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `<p>${data[id].text}</p>`;
+            modalContent.innerHTML = `
+                <p>${data[id].text}</p>
+                <button class="close-btn" onclick="closeModal()">X</button>
+            `;
         }
 
         function showVideo(id) {
@@ -130,7 +146,7 @@
                     <source src="${data[id].video}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                
+                <button class="close-btn" onclick="closeModal()">X</button>
             `;
         }
 
@@ -144,3 +160,4 @@
     </script>
 </body>
 </html>
+
